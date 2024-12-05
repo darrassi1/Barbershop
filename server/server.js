@@ -10,9 +10,10 @@ const profileRoute = require('./routes/profile');
 dotenv.config();
 const app = express();
 
-// Extremely permissive CORS configuration
+// Updated CORS configuration
 app.use(cors({
-  origin: '*', // Allow all origins
+  origin: 'https://barbershop-pearl-seven.vercel.app',
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -39,6 +40,9 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'Server is running' });
 });
+
+// Add this before your routes
+app.options('*', cors());
 
 app.use('/', authRoute);
 app.use('/', appointmentRoute);

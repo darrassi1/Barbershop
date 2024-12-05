@@ -29,7 +29,16 @@ const Register = (props) => {
         userData.confirmPass = confirmPass
        
         
-        let response =  await axios.post('https://barbershop-server-alpha.vercel.app/register', userData)
+        let response =  await axios.post(
+                'https://barbershop-server-alpha.vercel.app/register', 
+                userData,
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            )
         let {error} = response.data
         if(error){
             loading.style.display = 'none'

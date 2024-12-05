@@ -73,7 +73,12 @@ const Appointment = (props) => {
         appointmentData.day = obj.day
         appointmentData.timeInMS = time
 
-        let response = await axios.post('https://barbershop-server-alpha.vercel.app/changeappointment', appointmentData)
+        let response = await axios.post('https://barbershop-server-alpha.vercel.app/changeappointment', appointmentData,{
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
         let { error } = response.data
         if(error){
             console.log(error)
