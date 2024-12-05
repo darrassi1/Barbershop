@@ -28,12 +28,8 @@ const Login = (props) => {
         userData.email = email
         userData.pass = pass
 
-        let response = await axios.post('https://barbershop-server-alpha.vercel.app/login', userData, {
-    withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
+        let response = await axios.post('https://barbershop-server-alpha.vercel.app/login', userData)
+
         let {id, status, error, name, admin, phone} = response.data
         if(error){
             loading.style.display = 'none'
