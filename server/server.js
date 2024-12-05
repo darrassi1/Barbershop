@@ -1,28 +1,45 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db')
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const authRoute = require('./routes/auth');
 const appointmentRoute = require('./routes/appointment');
 const profileRoute = require('./routes/profile');
 
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
-dotenv.config({ path:'./config/config.env' })
-
+dotenv.config();
 const app = express();
 
-connectDB()
+// MongoDB Connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/yourdbname', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true })); // if req.body is undifined need to add this middleware!
-app.use(express.json());  // if req.body is empty need to add this middleware!
-const PORT = process.env.PORT
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use('/', authRoute);
 app.use('/', appointmentRoute);
 app.use('/', profileRoute);
 
-app.listen( PORT || 5000, () =>
-  console.log(`Server has started on port:${PORT}`)
-);
+// For Vercel deployment
+module.exports = app;
+
+// Local development
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
