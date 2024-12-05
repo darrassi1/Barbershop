@@ -41,14 +41,22 @@ app.use((req, res, next) => {
   next();
 });
 
-const uri = process.env.MONGO_URI ;
+// MongoDB URI from .env
+const uri = process.env.MONGO_URI;
 
 async function connectDB() {
   try {
+    // Connect to MongoDB using Mongoose
     await mongoose.connect(uri, {
       serverApi: { version: '1', strict: true, deprecationErrors: true }
     });
     console.log("Connected to MongoDB successfully!");
+    // Explicitly select the database after connecting
+    const dbName = 'barbershopdb';  // Replace with the name of your database
+    const db = mongoose.connection.useDb(dbName);
+    // Ping MongoDB to ensure connection is working
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch (error) {
     console.error("MongoDB connection error:", error);
   }
@@ -67,6 +75,7 @@ app.get('/health', (req, res) => {
 // Handle preflight requests for all routes
 app.options('*', cors());
 
+// Register routes
 app.use('/', authRoute);
 app.use('/', appointmentRoute);
 app.use('/', profileRoute);
