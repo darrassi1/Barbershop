@@ -10,19 +10,12 @@ const profileRoute = require('./routes/profile');
 dotenv.config();
 const app = express();
 
-// Updated CORS configuration
-const corsOptions = {
-  origin: [
-    'https://barbershop-pearl-seven.vercel.app', 
-    'http://localhost:3000'  // Add local development URL if needed
-  ],
+// Extremely permissive CORS configuration
+app.use(cors({
+  origin: '*', // Allow all origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 const uri = "mongodb+srv://younesdarrassi:test@123,@clusterbarbershop.iav48.mongodb.net/?retryWrites=true&w=majority&appName=Clusterbarbershop";
 
@@ -41,6 +34,11 @@ connectDB();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Add a simple health check route
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'Server is running' });
+});
 
 app.use('/', authRoute);
 app.use('/', appointmentRoute);
