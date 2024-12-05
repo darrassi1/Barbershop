@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const uri = "mongodb+srv://younesdarrassi:test@123,@clusterbarbershop.iav48.mongodb.net/?retryWrites=true&w=majority&appName=Clusterbarbershop";
+const uri = process.env.MONGO_URI ;
 
 async function connectDB() {
   try {
@@ -64,7 +64,7 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'Server is running' });
 });
 
-// Add this before your routes
+// Handle preflight requests for all routes
 app.options('*', cors());
 
 app.use('/', authRoute);

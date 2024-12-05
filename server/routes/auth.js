@@ -18,6 +18,7 @@ router.get('/', async (req, res) => {
 
 
 router.post('/register', async (req, res) =>{
+res.send('hi from the register')
     let {email, pass, confirmPass} = req.body
 
     console.log('register data: ',req.body)
