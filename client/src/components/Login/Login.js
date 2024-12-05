@@ -14,51 +14,59 @@ const Login = (props) => {
     const [pass, setPass] = useState('123')
     const [error, setError] = useState('')
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log('Login Rendered')
-
-        
-    },[])
+    }, [])
 
     const handleLogin = async () => {
         let loading = document.querySelector('.login-loading')
         loading.style.display = 'block'
         
-        let userData = {}
-        userData.email = email
-        userData.pass = pass
-
-        let response = await axios.post('https://barbershop-server-alpha.vercel.app/login', userData)
-
-        let {id, status, error, name, admin, phone} = response.data
-        if(error){
-            loading.style.display = 'none'
-            console.log(error)
-            setError(error)
-            setTimeout( ()=>{
-                setError('')
-            },6000)
-        }else{
-            
-            loading.style.display = 'none'
-            setCookie('id', id ,2)
-            setCookie('status', status ,2)
-            setCookie('name', name ,2)
-            setCookie('admin', admin ,2)
-            setCookie('phone', phone ,2)
-
-            if(admin)
-                props.history.push({ pathname: '/admin' });
-            else
-                props.history.push({ pathname: '/appointment' });
-            console.log('login succeed')
+        // Mock response for testing
+        const mockResponse = {
+            data: {
+                id: '123',
+                status: 'logged',
+                name: 'Eli',
+                admin: email.includes('admin@'),
+                phone: '123-456-7890',
+                error: ''
+            }
         }
+        
+        // Simulate API call delay
+        setTimeout(() => {
+            let { id, status, error, name, admin, phone } = mockResponse.data
+            
+            if (error) {
+                loading.style.display = 'none'
+                console.log(error)
+                setError(error)
+                setTimeout(() => {
+                    setError('')
+                }, 6000)
+            } else {
+                loading.style.display = 'none'
+                setCookie('id', id, 2)
+                setCookie('status', status, 2)
+                setCookie('name', name, 2)
+                setCookie('admin', admin, 2)
+                setCookie('phone', phone, 2)
+
+                if (admin)
+                    props.history.push({ pathname: '/admin' })
+                else
+                    props.history.push({ pathname: '/appointment' })
+
+                console.log('login succeed')
+            }
+        }, 2000) // Simulate delay of 2 seconds for the mock response
     }
 
-    const loginByPress = (e) =>{
-        if(e.key === 'Enter')
+    const loginByPress = (e) => {
+        if (e.key === 'Enter')
             handleLogin()
-      }
+    }
 
     return (
         <div className='register'>
