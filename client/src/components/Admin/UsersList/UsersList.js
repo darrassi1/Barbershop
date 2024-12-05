@@ -8,7 +8,7 @@ const UserList = () => {
 
     useEffect(()=>{
         console.log('user list rendred')
-        axios.get('https://barber-appointments.herokuapp.com/getusers').then((response) => {
+        axios.get('https://barbershop-server-alpha.vercel.app/getusers').then((response) => {
 
         
             let {error} = response.data

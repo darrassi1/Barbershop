@@ -31,7 +31,7 @@ const UserProfile = (props) => {
 
 
     const getProfile = (userID) =>{
-        axios.get(`https://barber-appointments.herokuapp.com/profiledata?id=${userID}`).then((response) =>{
+        axios.get(`https://barbershop-server-alpha.vercel.app/profiledata?id=${userID}`).then((response) =>{
 
             let {error, email, name, phone } = response.data 
             if(error){
@@ -46,7 +46,7 @@ const UserProfile = (props) => {
             }
         })
 
-        axios.get(`https://barber-appointments.herokuapp.com/userappointment?id=${userID}`).then((response) =>{
+        axios.get(`https://barbershop-server-alpha.vercel.app/userappointment?id=${userID}`).then((response) =>{
             console.log(response.data)
 
             let {error, day, time, date } = response.data 
@@ -74,7 +74,7 @@ const UserProfile = (props) => {
             obj.phone = updatedPhone
             obj.userID = getCookie('id')
     
-            axios.post('https://barber-appointments.herokuapp.com/updateprofile', obj).then((response) =>{
+            axios.post('https://barbershop-server-alpha.vercel.app/updateprofile', obj).then((response) =>{
                 let {error} = response.data
 
                 if(error){
@@ -114,7 +114,7 @@ const UserProfile = (props) => {
 
     const cancelAppointment = async() => {
 
-        let response = await axios.post('https://barber-appointments.herokuapp.com/cancelappointment', {id:getCookie('id')})
+        let response = await axios.post('https://barbershop-server-alpha.vercel.app/cancelappointment', {id:getCookie('id')})
         console.log(response.data)
         let {error} = response.data
         if(error){
@@ -128,7 +128,7 @@ const UserProfile = (props) => {
 
     const deleteAcc = async() =>{
         console.log('id cookie ',getCookie('id'))
-        let response = await axios.post('https://barber-appointments.herokuapp.com/deleteacc', {id:getCookie('id')})
+        let response = await axios.post('https://barbershop-server-alpha.vercel.app/deleteacc', {id:getCookie('id')})
         let {error} = response.data
         if(error){
             alert(error)

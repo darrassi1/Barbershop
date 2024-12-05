@@ -17,7 +17,7 @@ const AppointmentsList = () => {
         setThisSunday(makeDate(sundays.sunday))
         setLastSunday(makeDate(sundays.nextSunday))
 
-        axios.get('https://barber-appointments.herokuapp.com/getappointments').then((response)=>{
+        axios.get('https://barbershop-server-alpha.vercel.app/getappointments').then((response)=>{
             console.log(response.data)
 
             let {error} = response.data
